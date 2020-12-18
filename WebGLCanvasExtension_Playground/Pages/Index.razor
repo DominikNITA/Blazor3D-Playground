@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using Blazor.Extensions.Canvas.WebGL
 @using Blazor.Extensions
+@using Blazor.Extensions.Canvas
+@using GLMatrixSharp
 @inject HttpClient Http
 
 <h1>Hello, world!</h1>
@@ -129,7 +131,7 @@
                 12, 13, 14,     12, 14, 15,   // bottom
                 16, 17, 18,     16, 18, 19,   // right
                 20, 21, 22,     20, 22, 23   // left
-        };
+            };
         await gl.BufferDataAsync(BufferType.ELEMENT_ARRAY_BUFFER, indices, BufferUsageHint.STATIC_DRAW);
         buffers.Add("indices", indexBuffer);
 
@@ -199,10 +201,10 @@
         //Buffers - Execution time - 12ms with console opened
 
         //Matrices
-        //_projectionMatrix = await GlMatrix.Perspective((float)(45 * Math.PI / 180), 640f / 640, 0.01f, 100f);
+        _projectionMatrix = Mat4.Perspective((float)(45 * Math.PI / 180), 640f / 640, 0.01f, 100f);
 
-        //_modelViewMatrix = await GlMatrix.Create();
-        //_modelViewMatrix = await GlMatrix.Translate(_modelViewMatrix, new float[] { -0.0f, 0.0f, -6f });
+        _modelViewMatrix = Mat4.Create();
+        _modelViewMatrix = Mat4.Translate(_modelViewMatrix, new float[] { -0.0f, 0.0f, -6f });
         //_modelViewMatrix = await GlMatrix.Rotate(_modelViewMatrix, rotationX * 6.28f, new float[] { 1f, 0f, 0f });
         //_modelViewMatrix = await GlMatrix.Rotate(_modelViewMatrix, rotationY * 6.28f, new float[] { 0f, 1f, 0f });
         //_modelViewMatrix = await GlMatrix.Rotate(_modelViewMatrix, rotationZ * 6.28f, new float[] { 0f, 0f, 1f });
