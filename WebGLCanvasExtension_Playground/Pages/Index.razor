@@ -8,6 +8,7 @@
 <h1>Hello, world!</h1>
 
 <BECanvas Width="640" Height="640" @ref="_canvasReference"></BECanvas>
+<p>FPS: <span>@_fps</span></p>
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
@@ -17,13 +18,18 @@
     Dictionary<string, WebGLBuffer> _buffers;
     WebGLProgram _program;
 
-    float[] _projectionMatrix;
+    float[] _projectionMatrix = Mat4.Perspective((float)(45 * Math.PI / 180), 640f / 640, 0.01f, 100f);
     float[] _modelViewMatrix;
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        await SetupContext();
-        await DrawScene(_buffers, _context, _program);
+        if (firstRender)
+        {
+            await SetupContext();
+            await StartAnimation();
+        }
+
+        //await DrawScene(_buffers, _context, _program);
     }
 
     async Task SetupContext()
@@ -196,24 +202,50 @@
         //await gl.DepthFuncAsync(CompareFunction.LEQUAL);
 
         await gl.ClearAsync(BufferBits.COLOR_BUFFER_BIT | BufferBits.DEPTH_BUFFER_BIT);
-        //Execution time - 9ms with console opened
-
-        //Buffers - Execution time - 12ms with console opened
 
         //Matrices
-        _projectionMatrix = Mat4.Perspective((float)(45 * Math.PI / 180), 640f / 640, 0.01f, 100f);
 
         _modelViewMatrix = Mat4.Create();
         _modelViewMatrix = Mat4.Translate(_modelViewMatrix, new float[] { -0.0f, 0.0f, -6f });
-        //_modelViewMatrix = await GlMatrix.Rotate(_modelViewMatrix, rotationX * 6.28f, new float[] { 1f, 0f, 0f });
-        //_modelViewMatrix = await GlMatrix.Rotate(_modelViewMatrix, rotationY * 6.28f, new float[] { 0f, 1f, 0f });
-        //_modelViewMatrix = await GlMatrix.Rotate(_modelViewMatrix, rotationZ * 6.28f, new float[] { 0f, 0f, 1f });
-        //Execution time - 15ms without console open and 60ms with console
+        _modelViewMatrix = Mat4.Rotate(_modelViewMatrix, (float)(_xRotation * Math.Tau), new float[] { 1f, 0f, 0f });
+        _modelViewMatrix = Mat4.Rotate(_modelViewMatrix, (float)(0.1f * Math.Tau), new float[] { 0f, 1f, 0f });
+        _modelViewMatrix = Mat4.Rotate(_modelViewMatrix, (float)(0.5f * Math.Tau), new float[] { 0f, 0f, 1f });
 
         await gl.UniformMatrixAsync(await gl.GetUniformLocationAsync(program, "uModelViewMatrix"), false, _modelViewMatrix);
         await gl.UniformMatrixAsync(await gl.GetUniformLocationAsync(program, "uProjectionMatrix"), false, _projectionMatrix);
 
         await gl.DrawElementsAsync(Primitive.TRIANGLES, 36, DataType.UNSIGNED_SHORT, 0);
-        //Execution time - 7ms without console open and 16ms with console
+    }
+
+
+    DateTime _fpsLastTime = DateTime.Now; // marks the beginning the measurement began
+    int _framesRendered; // an increasing count
+    int _fps; // the FPS calculated from the last measurement
+
+    DateTime _lastTime = DateTime.Now;
+    double _deltaTime;
+    float _xRotation = 0f;
+    async Task StartAnimation()
+    {
+        _deltaTime = (DateTime.Now - _lastTime).TotalSeconds;
+        _lastTime = DateTime.Now;
+        _xRotation += 0.4f * (float)_deltaTime;
+
+        await DrawScene(_buffers,_context,_program);
+
+        _framesRendered++;
+
+        if ((DateTime.Now - _fpsLastTime).TotalSeconds >= 1)
+        {
+            // one second has elapsed 
+
+            _fps = _framesRendered;
+            _framesRendered = 0;
+            _fpsLastTime = DateTime.Now;
+        }
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await StartAnimation();
     }
 }

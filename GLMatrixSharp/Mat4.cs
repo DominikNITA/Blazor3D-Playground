@@ -89,5 +89,72 @@ namespace GLMatrixSharp
             }
             return res;
         }
+
+        public static float[] Rotate(float[] a, float rad, float[] axis)
+        {
+            float x = axis[0], y = axis[1], z = axis[2];
+            float[] res = new float[16];
+            float len = (float)Math.Sqrt(x*x + y*y + z*z);
+            float s, c, t;
+            float a00, a01, a02, a03;
+            float a10, a11, a12, a13;
+            float a20, a21, a22, a23;
+            float b00, b01, b02;
+            float b10, b11, b12;
+            float b20, b21, b22;
+            //if (len < glMatrix.EPSILON)
+            //{
+            //    return null;
+            //}
+            len = 1 / len;
+            x *= len;
+            y *= len;
+            z *= len;
+            s = (float)Math.Sin(rad);
+            c = (float)Math.Cos(rad);
+            t = 1 - c;
+            a00 = a[0];
+            a01 = a[1];
+            a02 = a[2];
+            a03 = a[3];
+            a10 = a[4];
+            a11 = a[5];
+            a12 = a[6];
+            a13 = a[7];
+            a20 = a[8];
+            a21 = a[9];
+            a22 = a[10];
+            a23 = a[11];
+            // Construct the elements of the rotation matrix
+            b00 = x * x * t + c;
+            b01 = y * x * t + z * s;
+            b02 = z * x * t - y * s;
+            b10 = x * y * t - z * s;
+            b11 = y * y * t + c;
+            b12 = z * y * t + x * s;
+            b20 = x * z * t + y * s;
+            b21 = y * z * t - x * s;
+            b22 = z * z * t + c;
+            // Perform rotation-specific matrix multiplication
+            res[0] = a00 * b00 + a10 * b01 + a20 * b02;
+            res[1] = a01 * b00 + a11 * b01 + a21 * b02;
+            res[2] = a02 * b00 + a12 * b01 + a22 * b02;
+            res[3] = a03 * b00 + a13 * b01 + a23 * b02;
+            res[4] = a00 * b10 + a10 * b11 + a20 * b12;
+            res[5] = a01 * b10 + a11 * b11 + a21 * b12;
+            res[6] = a02 * b10 + a12 * b11 + a22 * b12;
+            res[7] = a03 * b10 + a13 * b11 + a23 * b12;
+            res[8] = a00 * b20 + a10 * b21 + a20 * b22;
+            res[9] = a01 * b20 + a11 * b21 + a21 * b22;
+            res[10] = a02 * b20 + a12 * b21 + a22 * b22;
+            res[11] = a03 * b20 + a13 * b21 + a23 * b22;
+
+            //copy the unchanged last row
+            res[12] = a[12];
+            res[13] = a[13];
+            res[14] = a[14];
+            res[15] = a[15];
+            return res;
+        }
     }
 }
