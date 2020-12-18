@@ -57,5 +57,37 @@ namespace GLMatrixSharp
 
             return res;
         }
+
+        public static float[] Perspective(float fovy, float aspect, float near, float far)
+        {
+            var res = new float[16];
+            var f = (float)(1.0 / Math.Tan(fovy / 2));
+            res[0] = (f / aspect);
+            res[1] = 0;
+            res[2] = 0;
+            res[3] = 0;
+            res[4] = 0;
+            res[5] = f;
+            res[6] = 0;
+            res[7] = 0;
+            res[8] = 0;
+            res[9] = 0;
+            res[11] = -1;
+            res[12] = 0;
+            res[13] = 0;
+            res[15] = 0;
+            if (!float.IsInfinity(far))
+            {
+                var nf = 1 / (near - far);
+                res[10] = (far + near) * nf;
+                res[14] = 2 * far * near * nf;
+            }
+            else
+            {
+                res[10] = -1;
+                res[14] = -2 * near;
+            }
+            return res;
+        }
     }
 }
