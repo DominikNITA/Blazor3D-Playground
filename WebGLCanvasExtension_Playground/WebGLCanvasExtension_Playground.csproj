@@ -16,4 +16,8 @@
     <Folder Include="wwwroot\shaders\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GLMatrixSharp\GLMatrixSharp.csproj" />
+  </ItemGroup>
+
 </Project>
