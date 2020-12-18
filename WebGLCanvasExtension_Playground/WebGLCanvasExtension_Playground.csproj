@@ -11,4 +11,9 @@
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\models\" />
+    <Folder Include="wwwroot\shaders\" />
+  </ItemGroup>
+
 </Project>
