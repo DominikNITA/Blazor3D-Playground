@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazor.Extensions.Canvas" Version="1.1.0-preview1" />
+    <PackageReference Include="CjClutter.ObjLoader" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>
