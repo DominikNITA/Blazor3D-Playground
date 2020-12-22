@@ -59,11 +59,11 @@
         await _context.CullFaceAsync(Face.BACK);
 
         _program = await ShaderProgram.InitShaderProgram(_context, await Http.GetStringAsync("/shaders/vs.glsl"), await Http.GetStringAsync("/shaders/fs.glsl"));
-        var modelData = await MeshLoader.LoadModel(await Http.GetStreamAsync("/models/cylinderWithRoof.obj"), await Http.GetStreamAsync("/models/cylinderWithRoof.mtl"));
-        _buffers = await InitBuffers(_context, modelData);
+        //var modelData = await Mesh.LoadModel(await Http.GetStreamAsync("/models/cylinderWithRoof.obj"), await Http.GetStreamAsync("/models/cylinderWithRoof.mtl"));
+        _buffers = await InitBuffers(_context);
     }
 
-    async Task<Dictionary<string, WebGLBuffer>> InitBuffers(WebGLContext gl, LoadResult data)
+    async Task<Dictionary<string, WebGLBuffer>> InitBuffers(WebGLContext gl)
     {
         var buffers = new Dictionary<string, WebGLBuffer>();
         var vertices = new[]

@@ -13,7 +13,7 @@ namespace WebGLSharp
         int _count;
         WebGLBuffer _dataBuffer;
 
-        public async static Task<VBO> BuildVBOAsync(WebGLContext gl, int count, float[] data)
+        public async static Task<VBO> BuildAsync(WebGLContext gl, int count, float[] data)
         {
             var dataBuffer = await gl.CreateBufferAsync();
             await gl.BindBufferAsync(BufferType.ARRAY_BUFFER, dataBuffer);
@@ -31,6 +31,11 @@ namespace WebGLSharp
         public async Task DestroyAsync()
         {
             await _gl.DeleteBufferAsync(_dataBuffer);
+        }
+
+        internal static object BuildAsync(WebGLContext gl, int vertexCount, object positions)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task BindToAttributeAsync(uint attribute)
