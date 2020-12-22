@@ -5,11 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazor.Extensions.Canvas" Version="1.1.0-preview1" />
-    <PackageReference Include="CjClutter.ObjLoader" Version="1.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Canvas\src\Blazor.Extensions.Canvas\Blazor.Extensions.Canvas.csproj" />
     <ProjectReference Include="..\GLMatrixSharp\GLMatrixSharp.csproj" />
   </ItemGroup>
 
