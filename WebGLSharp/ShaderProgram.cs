@@ -8,7 +8,18 @@ namespace WebGLSharp
 {
     public class ShaderProgram
     {
-        public static async Task<WebGLProgram> InitShaderProgram(WebGLContext gl, string vsSource, string fsSource)
+        public WebGLProgram Program { get; set; }
+        public Dictionary<string,int> Attributes { get; set; }
+        public Dictionary<string, WebGLUniformLocation> Uniforms { get; set; }
+
+        public ShaderProgram(WebGLProgram program, Dictionary<string, int> attributes, Dictionary<string, WebGLUniformLocation> uniforms)
+        {
+            Program = program;
+            Attributes = attributes;
+            Uniforms = uniforms;
+        }
+
+        public static async Task<ShaderProgram> InitShaderProgram(WebGLContext gl, string vsSource, string fsSource, List<string> attributesNames = null, List<string> uniformsNames = null)
         {
             var vertexShader = await LoadShaderAsync(gl, ShaderType.VERTEX_SHADER, vsSource);
             var fragmentShader = await LoadShaderAsync(gl, ShaderType.FRAGMENT_SHADER, fsSource);
@@ -26,7 +37,22 @@ namespace WebGLSharp
                 string info = await gl.GetProgramInfoLogAsync(program);
                 throw new Exception("An error occured while linking the program: " + info);
             }
-            return program;
+
+            attributesNames ??= new List<string>();
+            var attributesDict = new Dictionary<string, int>();
+            foreach (var attribute in attributesNames)
+            {
+                attributesDict.Add(attribute, await gl.GetAttribLocationAsync(program, attribute));
+            }
+
+            uniformsNames ??= new List<string>();
+            var uniformsDict = new Dictionary<string, WebGLUniformLocation>();
+            foreach (var uniform in uniformsNames)
+            {
+                uniformsDict.Add(uniform, await gl.GetUniformLocationAsync(program, uniform));
+            }
+
+            return new ShaderProgram(program, attributesDict,uniformsDict);
         }
 
         async static Task<WebGLShader> LoadShaderAsync(WebGLContext gl, ShaderType type, string source)

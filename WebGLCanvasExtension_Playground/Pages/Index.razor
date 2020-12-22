@@ -25,7 +25,7 @@
     BECanvasComponent _canvasReference;
     WebGLContext _context;
     Dictionary<string, WebGLBuffer> _buffers;
-    WebGLProgram _program;
+    ShaderProgram _program;
 
     float[] _projectionMatrix = Mat4.Perspective((float)(45 * Math.PI / 180), 640f / 640, 0.01f, 100f);
     float[] _modelViewMatrix;
@@ -159,7 +159,7 @@
         await gl.EnableVertexAttribArrayAsync(1);
 
         await gl.BindBufferAsync(BufferType.ELEMENT_ARRAY_BUFFER, buffers.GetValueOrDefault("indices"));
-        await gl.UseProgramAsync(_program);
+        await gl.UseProgramAsync(_program.Program);
 
         return buffers;
     }
@@ -204,7 +204,7 @@
             _lastTime = DateTime.Now;
             _xRotation += 0.4f * (float)_deltaTime;
 
-            await DrawScene(_buffers, _context, _program);
+            await DrawScene(_buffers, _context, _program.Program);
 
             _framesRendered++;
 
@@ -228,6 +228,4 @@
         cts.Cancel();
         cts.Dispose();
     }
-
-
 }

@@ -33,11 +33,6 @@ namespace WebGLSharp
             await _gl.DeleteBufferAsync(_dataBuffer);
         }
 
-        internal static object BuildAsync(WebGLContext gl, int vertexCount, object positions)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task BindToAttributeAsync(uint attribute)
         {
             await _gl.BindBufferAsync(BufferType.ARRAY_BUFFER, _dataBuffer);

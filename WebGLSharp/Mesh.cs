@@ -53,11 +53,11 @@ namespace WebGLSharp
         public async Task DrawAsync(ShaderProgram shaderProgram)
         {
             //TODO: add attribute dictionary to the shader program
-            await _positions.BindToAttributeAsync(0);
-            await _normals.BindToAttributeAsync(1);
-            await _uvs.BindToAttributeAsync(2);
-            await _gl.UniformMatrixAsync(new WebGLUniformLocation(), false, _position);
-            await _texture.UseAsync( new WebGLUniformLocation(), 0);
+            await _positions.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("position"));
+            await _normals.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("normal"));
+            await _uvs.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("uv"));
+            await _gl.UniformMatrixAsync(shaderProgram.Uniforms.GetValueOrDefault("model"), false, _position);
+            await _texture.UseAsync( shaderProgram.Uniforms.GetValueOrDefault("diffuse"), 0);
             await _gl.DrawArraysAsync(Primitive.TRIANGLES, 0, _vertexCount);
         }
 
