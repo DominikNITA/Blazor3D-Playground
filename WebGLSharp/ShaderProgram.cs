@@ -9,12 +9,14 @@ namespace WebGLSharp
     public class ShaderProgram
     {
         public WebGLProgram Program { get; set; }
-        public Dictionary<string,int> Attributes { get; set; }
+        public Dictionary<string, int> Attributes { get; set; }
         public Dictionary<string, WebGLUniformLocation> Uniforms { get; set; }
+        public WebGLContext GlContext { get; set; }
 
-        public ShaderProgram(WebGLProgram program, Dictionary<string, int> attributes, Dictionary<string, WebGLUniformLocation> uniforms)
+        public ShaderProgram(WebGLProgram program, WebGLContext gl, Dictionary<string, int> attributes, Dictionary<string, WebGLUniformLocation> uniforms)
         {
             Program = program;
+            GlContext = gl;
             Attributes = attributes;
             Uniforms = uniforms;
         }
@@ -52,7 +54,7 @@ namespace WebGLSharp
                 uniformsDict.Add(uniform, await gl.GetUniformLocationAsync(program, uniform));
             }
 
-            return new ShaderProgram(program, attributesDict,uniformsDict);
+            return new ShaderProgram(program, gl, attributesDict, uniformsDict);
         }
 
         async static Task<WebGLShader> LoadShaderAsync(WebGLContext gl, ShaderType type, string source)

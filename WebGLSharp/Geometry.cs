@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Globalization;
 
 namespace WebGLSharp
 {
@@ -15,7 +16,7 @@ namespace WebGLSharp
             _faces = faces;
         }
 
-        internal static Geometry Parse(string objFileContent)
+        public static Geometry Parse(string objFileContent)
         {
             var positionRegex = new Regex(@"^v\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)");
             var normalRegex = new Regex(@"^vn\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)");
@@ -33,31 +34,32 @@ namespace WebGLSharp
                 if (positionRegex.IsMatch(line))
                 {
                     var match = positionRegex.Match(line);
+                    Console.WriteLine($"{match.Groups[1].Value} => {match.Groups[2].Value} => {match.Groups[3].Value}");
                     positions.Add(new Vector3(
-                        float.Parse(match.Groups[0].Value),
-                        float.Parse(match.Groups[1].Value),
-                        float.Parse(match.Groups[2].Value)));
+                        float.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture),
+                        float.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture),
+                        float.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture)));
                 }
                 else if (normalRegex.IsMatch(line))
                 {
                     var match = normalRegex.Match(line);
                     normals.Add(new Vector3(
-                        float.Parse(match.Groups[0].Value),
-                        float.Parse(match.Groups[1].Value),
-                        float.Parse(match.Groups[2].Value)));
+                        float.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture),
+                        float.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture),
+                        float.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture)));
                 }
                 else if (uvRegex.IsMatch(line))
                 {
                     var match = uvRegex.Match(line);
                     uvs.Add(new Vector2(float.Parse(
-                        match.Groups[0].Value),
-                        1 - float.Parse(match.Groups[1].Value)));
+                        match.Groups[1].Value, CultureInfo.InvariantCulture),
+                        1 - float.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture)));
                 }
                 else if (faceRegex.IsMatch(line))
                 {
                     var verticies = new List<Vertex>();
                     var match = faceRegex.Match(line);
-                    for (int i = 0; i < 9; i += 3)
+                    for (int i = 1; i < 10; i += 3)
                     {
                         verticies.Add(new Vertex(
                             positions[int.Parse(match.Groups[i].Value) - 1],

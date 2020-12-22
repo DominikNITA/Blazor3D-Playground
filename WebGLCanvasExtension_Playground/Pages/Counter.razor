@@ -1,16 +1,52 @@
-﻿@page "/counter"
+﻿@page "/webglsharp"
+@using Blazor.Extensions.Canvas.WebGL
+@using Blazor.Extensions
+@using Blazor.Extensions.Canvas
+@using GLMatrixSharp
+@using System.Threading
+@using WebGLSharp
+@inject HttpClient Http
 
-<h1>Counter</h1>
+<h1>WebGLSharp</h1>
 
-<p>Current count: @currentCount</p>
+<p>Tests with loading custom mesh from .obj file and displaying it using custom helpers classes from WebGLSharp.</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<BECanvas Width="640" Height="640" @ref="_canvasReference"></BECanvas>
 
 @code {
-    private int currentCount = 0;
+    BECanvasComponent _canvasReference;
+    ShaderProgram _shaderProgram;
+    Mesh _cylinderMesh;
+    Light _light;
 
-    private void IncrementCount()
+    protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        currentCount++;
+        if (firstRender)
+        {
+            var gl = await this._canvasReference.CreateWebGLAsync(new WebGLContextAttributes
+            {
+                PowerPreference = WebGLContextAttributes.POWER_PREFERENCE_HIGH_PERFORMANCE
+            });
+            await gl.ClearColorAsync(0.1f, 0.1f, 0.3f, 1);
+            await gl.EnableAsync(EnableCap.DEPTH_TEST);
+            await gl.ClearAsync(BufferBits.COLOR_BUFFER_BIT | BufferBits.DEPTH_BUFFER_BIT);
+            _shaderProgram = await ShaderProgram.InitShaderProgram(
+            gl,
+            await Http.GetStringAsync("/shaders/vs.glsl"),
+            await Http.GetStringAsync("/shaders/fs.glsl"),
+            new List<string>() { "position", "normal", "uv" },
+            new List<string>() { "model", "view", "projection", "ambientLight", "lightDirection", "diffuse" });
+            var geometry = Geometry.Parse(await Http.GetStringAsync("/models/triangulatedCylinder.obj"));
+            var textureData = new int[400];
+            Random rnd = new Random();
+            for (int i = 0; i < 400; i++)
+            {
+                textureData[i] = i % 3 == 0 ? 255 : rnd.Next(0, 256);
+            }
+            //var texture = await WebGLSharp.Texture.BuildAsync(gl, textureData);
+            //_cylinderMesh = await Mesh.BuildAsync(gl, geometry, texture);
+            _light = new Light();
+            StateHasChanged();
+        }
     }
 }

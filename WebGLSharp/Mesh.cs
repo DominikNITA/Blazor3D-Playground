@@ -30,7 +30,7 @@ namespace WebGLSharp
             _gl = gl;
         }
 
-        public async Task<Mesh> BuildAsync(WebGLContext gl, Geometry geometry, Texture texture)
+        public async static Task<Mesh> BuildAsync(WebGLContext gl, Geometry geometry, Texture texture)
         {
             int vertexCount = geometry.GetVertexCount();
             return new Mesh( 

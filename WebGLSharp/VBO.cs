@@ -20,7 +20,7 @@ namespace WebGLSharp
             await gl.BufferDataAsync(BufferType.ARRAY_BUFFER, data, BufferUsageHint.STATIC_DRAW);
             return new VBO(gl, count, data, dataBuffer);
         }
-        private VBO(WebGLContext gl, int count,float[] data, WebGLBuffer dataBuffer)
+        private VBO(WebGLContext gl, int count, float[] data, WebGLBuffer dataBuffer)
         {
             _gl = gl;
             _count = count;
