@@ -34,7 +34,7 @@ namespace WebGLSharp
                 if (positionRegex.IsMatch(line))
                 {
                     var match = positionRegex.Match(line);
-                    Console.WriteLine($"{match.Groups[1].Value} => {match.Groups[2].Value} => {match.Groups[3].Value}");
+                    //Console.WriteLine($"{match.Groups[1].Value} => {match.Groups[2].Value} => {match.Groups[3].Value}");
                     positions.Add(new Vector3(
                         float.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture),
                         float.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture),

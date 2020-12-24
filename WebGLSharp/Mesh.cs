@@ -55,6 +55,8 @@ namespace WebGLSharp
             await _positions.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("position"));
             await _normals.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("normal"));
             await _uvs.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("uv"));
+            _position = Mat4.Translate(_position, new float[] { -0.0f, -1.0f, -6f });
+            _position = Mat4.Rotate(_position, 2, new float[3] { 0f, 1.3f, 2.9f });
             await _gl.UniformMatrixAsync(shaderProgram.Uniforms.GetValueOrDefault("model"), false, _position);
             await _texture.UseAsync( shaderProgram.Uniforms.GetValueOrDefault("diffuse"), 0);
             await _gl.DrawArraysAsync(Primitive.TRIANGLES, 0, _vertexCount);
