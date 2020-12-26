@@ -16,7 +16,7 @@ namespace WebGLSharp
             _faces = faces;
         }
 
-        public static Geometry Parse(string objFileContent)
+        public static Geometry ParseObjFile(string objFileContent)
         {
             var positionRegex = new Regex(@"^v\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)");
             var normalRegex = new Regex(@"^vn\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)");

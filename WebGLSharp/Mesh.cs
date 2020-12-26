@@ -55,8 +55,7 @@ namespace WebGLSharp
             await _positions.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("position"));
             await _normals.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("normal"));
             await _uvs.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("uv"));
-            _position = Mat4.Translate(_position, new float[] { -0.0f, -1.0f, -6f });
-            _position = Mat4.Rotate(_position, 2, new float[3] { 0f, 1.3f, 2.9f });
+            _position = Mat4.Translate(_position, new float[] { -0.0f, 0.0f, -6f });
             await _gl.UniformMatrixAsync(shaderProgram.Uniforms.GetValueOrDefault("model"), false, _position);
             await _texture.UseAsync( shaderProgram.Uniforms.GetValueOrDefault("diffuse"), 0);
             await _gl.DrawArraysAsync(Primitive.TRIANGLES, 0, _vertexCount);
@@ -64,7 +63,7 @@ namespace WebGLSharp
 
         public async Task<Mesh> LoadAsync(WebGLContext gl, string objFileContent, string textureFileContent)
         {
-            return await BuildAsync(gl, Geometry.Parse(objFileContent), Texture.Load(textureFileContent));
+            return await BuildAsync(gl, Geometry.ParseObjFile(objFileContent), Texture.Load(textureFileContent));
         }
 
         //public async static Task<LoadResult> LoadModel(Stream objStream, Stream mtlStream)

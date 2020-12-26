@@ -41,24 +41,27 @@
         new List<string>() { "position", "normal", "uv" },
         new List<string>() { "model", "projection", "ambientLight", "lightDirection", "diffuse" });
 
-            var geometry = Geometry.Parse(await Http.GetStringAsync("/models/triangulatedCylinder.obj"));
+            var geometry = Geometry.ParseObjFile(await Http.GetStringAsync("/models/susan.obj"));
             var textureData = new int[40000];
             Random rnd = new Random();
-            for (int i = 0; i < 40000; i++)
+            for (int i = 0; i < 40000; i = i + 4)
             {
-                textureData[i] = i % 3 == 0 ? 255 : rnd.Next(0, 256);
+                //Colors between 0-255
+                textureData[i] = rnd.Next(200,245);
+                textureData[i + 1] = 0;
+                textureData[i + 2] = 115;
+                textureData[i + 3] = 220;
             }
             var texture = await WebGLSharp.Texture.BuildAsync(gl, textureData);
             _cylinderMesh = await Mesh.BuildAsync(gl, geometry, texture);
             _light = new Light();
 
             await gl.UseProgramAsync(_shaderProgram.Program);
-            //await _light.UseAsync(_shaderProgram);
+            await _light.UseAsync(_shaderProgram);
             var projectionMatrix = Mat4.Perspective((float)(45 * Math.PI / 180), 1f, 0.1f, 100f);
             await gl.UniformMatrixAsync(_shaderProgram.Uniforms.GetValueOrDefault("projection"), false, projectionMatrix);
             Console.WriteLine("Drawing mesh");
             await _cylinderMesh.DrawAsync(_shaderProgram);
-            StateHasChanged();
         }
     }
 }

@@ -9,11 +9,12 @@ namespace WebGLSharp
     public class ShaderProgram
     {
         public WebGLProgram Program { get; set; }
+        public WebGLContext GlContext { get; set; }
         public Dictionary<string, int> Attributes { get; set; }
         public Dictionary<string, WebGLUniformLocation> Uniforms { get; set; }
-        public WebGLContext GlContext { get; set; }
 
-        public ShaderProgram(WebGLProgram program, WebGLContext gl, Dictionary<string, int> attributes, Dictionary<string, WebGLUniformLocation> uniforms)
+
+        private ShaderProgram(WebGLProgram program, WebGLContext gl, Dictionary<string, int> attributes, Dictionary<string, WebGLUniformLocation> uniforms)
         {
             Program = program;
             GlContext = gl;

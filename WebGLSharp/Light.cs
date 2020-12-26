@@ -17,7 +17,7 @@ namespace WebGLSharp
             AmbientLight = ambientLight;
         }
 
-        public Light() : this(new Vector3(5, 1, 1), 0f) { }
+        public Light() : this(new Vector3(-1, -1, -1), 0.5f) { }
 
         public async Task UseAsync(ShaderProgram shaderProgram)
         {

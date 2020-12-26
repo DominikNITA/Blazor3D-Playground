@@ -6,7 +6,6 @@
 @using System.IO
 @using System.Threading
 @using WebGLSharp
-@implements IDisposable
 @inject HttpClient Http
 
 <h1>Hello, 3D world!</h1>
@@ -25,7 +24,6 @@
     float[] _projectionMatrix = Mat4.Perspective((float)(45 * Math.PI / 180), 640f / 640, 0.01f, 100f);
     float[] _modelViewMatrix;
 
-    private CancellationTokenSource cts = new CancellationTokenSource();
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -33,7 +31,7 @@
         {
 
             await SetupContext();
-            await StartAnimation(cts);
+            await StartAnimation();
         }
 
         //await DrawScene(_buffers, _context, _program);
@@ -191,36 +189,36 @@
     double _deltaTime;
     float _xRotation = 0f;
 
-    async Task StartAnimation(CancellationTokenSource cts)
+    async Task StartAnimation()
     {
-        if (!cts.Token.IsCancellationRequested)
+        try
         {
+            //Animation logic
             _deltaTime = (DateTime.Now - _lastTime).TotalSeconds;
             _lastTime = DateTime.Now;
             _xRotation += 0.4f * (float)_deltaTime;
 
             await DrawScene(_buffers, _context, _program.Program);
 
+            //FPS counter logic
             _framesRendered++;
-
             if ((DateTime.Now - _fpsLastTime).TotalSeconds >= 1)
             {
                 // one second has elapsed
-
                 _fps = _framesRendered;
                 _framesRendered = 0;
                 _fpsLastTime = DateTime.Now;
+                StateHasChanged();
             }
 
-            await Task.Delay(1, cts.Token);
-            StateHasChanged();
-            await StartAnimation(cts);
-        }
-    }
+            //Animation Loop
+            await Task.Delay(1);
 
-    public void Dispose()
-    {
-        cts.Cancel();
-        cts.Dispose();
+            await StartAnimation();
+        }
+        catch
+        {
+            Console.WriteLine("error in animation loop -> user probably navigated from the page");
+        }
     }
 }
