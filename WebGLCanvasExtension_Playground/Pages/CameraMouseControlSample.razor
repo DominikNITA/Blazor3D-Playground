@@ -1,0 +1,7 @@
+﻿ @page "/cameracontrol" 
+
+<h1>Camera rotation</h1>
+
+<p>Drag with your mouse to rotate around the monkey's head.</p>
+
+<BECanvas Width="640" Height="640" @ref="_canvasReference" OnMouseDown="(e) => MouseDown(e)" OnMouseUp="(e) => MouseUp(e)" OnMouseMove="async (e) => await MouseMove(e)"></BECanvas>

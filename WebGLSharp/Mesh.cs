@@ -29,7 +29,7 @@ namespace WebGLSharp
             _gl = gl;
         }
 
-        public async static Task<Mesh> BuildAsync(WebGLContext gl, Geometry geometry, Texture texture)
+        public async static Task<Mesh> BuildAsync(WebGLContext gl, Geometry geometry, Texture texture, float[] initialPosition = null)
         {
             int vertexCount = geometry.GetVertexCount();
             return new Mesh( 
@@ -38,7 +38,7 @@ namespace WebGLSharp
                 await VBO.BuildAsync(gl, vertexCount, geometry.GetUvs()),
                 texture,
                 vertexCount,
-                Mat4.Create(),
+                initialPosition ?? Mat4.Create(),
                 gl);
         }
 
@@ -55,7 +55,6 @@ namespace WebGLSharp
             await _positions.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("position"));
             await _normals.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("normal"));
             await _uvs.BindToAttributeAsync((uint)shaderProgram.Attributes.GetValueOrDefault("uv"));
-            _position = Mat4.Translate(_position, new float[] { -0.0f, 0.0f, -6f });
             await _gl.UniformMatrixAsync(shaderProgram.Uniforms.GetValueOrDefault("model"), false, _position);
             await _texture.UseAsync( shaderProgram.Uniforms.GetValueOrDefault("diffuse"), 0);
             await _gl.DrawArraysAsync(Primitive.TRIANGLES, 0, _vertexCount);
