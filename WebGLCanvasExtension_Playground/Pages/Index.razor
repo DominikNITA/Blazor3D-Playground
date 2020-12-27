@@ -3,13 +3,13 @@
 <h2>About project &#38; code structure</h2>
 <section>
     <p>
-        This project contains my latest tests &#38; discoveries in domain of 3D rendering in Blazor and the code is available <a href="https://github.com/DominikNITA/Blazor3D-Playground">here</a>. I have decided to go with <strong>WebGL</strong> for now (check todo list below for another possibilites) because of it's maturity and wide adoption on any type of device. The objective is to write 3D apps with as few lines of JavaScript as possible.
+        This project contains my latest tests &#38; discoveries in domain of 3D rendering in Blazor and the code is available <a href="https://github.com/DominikNITA/Blazor3D-Playground">here</a>. I have decided to go with <strong>WebGL</strong> for now (check the list at the bottom for other possible technologies) because of it's maturity and wide adoption on any type of device. The objective is to write 3D apps with as few lines of JavaScript as possible.
     </p>
     <p>
         My research in this topic started with <a href="https://github.com/BlazorExtensions/Canvas"> BlazorExtensions/Canvas</a> nuget package. However the package is <strong>no longer supported or developed</strong> and has a few <strong>not working/bugged/not implemented</strong> features - so I decided to <strong>fork &#38; modify</strong> it to my needs and you can check the code right <a href="https://github.com/DominikNITA/Canvas">here</a>.
     </p>
     <p>
-        <strong>3D graphics necessitates the use of matrices</strong>, unfortunately none of availables math libraries does not provide functionnality similar to <a href="http://glmatrix.net/">GlMatrix.js</a> - very popular library for WebGL written in JavaScript. I had to create my own simplified version on it. The library is very limited for now, so it's not published in it's own repository on Github and you can only see it in the <a href="https://github.com/DominikNITA/Blazor3D-Playground/tree/master/GLMatrixSharp">GLMatrixSharp folder in the main repo</a>.
+        <strong>3D graphics necessitates the use of matrices</strong>, unfortunately none of availables math libraries provides functionnality similar to <a href="http://glmatrix.net/">GlMatrix.js</a> - very popular library for WebGL written in JavaScript. I had to create my own simplified version of it. The library is very limited for now, so it's not published in it's own repository on Github and you can only see it in the <a href="https://github.com/DominikNITA/Blazor3D-Playground/tree/master/GLMatrixSharp">GLMatrixSharp folder in the main repo</a>.
     </p>
     <p>
         During the development I have noticed that I need to write similar bites of code nearly all the time. For this reason I have created a <strong>proof of concept for a project with helper classes</strong> to create 3D world faster and with less bugs. For now it has classes for managing <strong>loading models, textures, allocating buffers etc.</strong> The code is located in the <a href="https://github.com/DominikNITA/Blazor3D-Playground/tree/master/WebGLSharp">WebGLSharp folder in the main repo</a>.
@@ -21,6 +21,7 @@
 <ul>
     <li><a href="/simple"><strong>Simple rotating cube</strong></a> - quick animation created following Mozilla MSDN tutorial on WebGL</li>
     <li><a href="/webglsharp"><strong>Model loading (WIP)</strong></a> - loading custom mesh from .obj file using my custom library</li>
+    <li><a href="/cameracontrol"><strong>Camera control with mouse</strong></a> - rotating the camera around an object using mouse events</li>
 </ul>
 <h2>Todo List</h2>
 <ul>
@@ -34,8 +35,8 @@
 <h2>Other technologies to check</h2>
 <ul>
     <li><strong>Unity3d =></strong> custom interop layer with JavaScript</li>
-    <li><strong>WaveEngine</strong> => .net5 and compiles to webassembly, but is lacking documentation and is bugged and clearly not production ready</li>
-    <li><strong>WebGPU</strong> => still experimental and implementation could be similar to WebGL</li>
-    <li><strong>JavaScript 3D library</strong> => robust engine and plenty of solved issues, but necessitates a custom interop layer that could harm the performance</li>
-    <li>And many many other solutions...</li>
+    <li><strong>WaveEngine => </strong>.net5 and compiles to webassembly, but is lacking documentation and is bugged and clearly not production ready</li>
+    <li><strong>WebGPU => </strong>still experimental and implementation could be similar to WebGL</li>
+    <li><strong>JavaScript 3D library =></strong> robust engine and plenty of solved issues, but necessitates a custom interop layer that could harm the performance</li>
+    <li><strong>And many many other solutions...</strong></li>
 </ul>
