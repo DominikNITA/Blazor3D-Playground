@@ -17,7 +17,9 @@ namespace WebGLCanvasExtension_Playground
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            string baseAddressSuffix = builder.HostEnvironment.IsProduction() ? "/Blazor3D-Playground" : "";
+
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress + baseAddressSuffix) });
 
             await builder.Build().RunAsync();
         }
