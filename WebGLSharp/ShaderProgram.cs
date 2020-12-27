@@ -53,7 +53,6 @@ namespace WebGLSharp
             foreach (var uniform in uniformsNames)
             {           
                 uniformsDict.Add(uniform, await gl.GetUniformLocationAsync(program, uniform));
-                Console.WriteLine($"{uniform} => {uniformsDict.GetValueOrDefault(uniform).Id}");
             }
 
             return new ShaderProgram(program, gl, attributesDict, uniformsDict);
