@@ -6,6 +6,8 @@
 @using System.IO
 @using System.Threading
 @using WebGLSharp
+@using System.Timers
+
 @inject HttpClient Http
 
 <h1>Hello, 3D world!</h1>
@@ -20,6 +22,7 @@
     WebGLContext _context;
     Dictionary<string, WebGLBuffer> _buffers;
     ShaderProgram _program;
+    System.Timers.Timer animationTimer;
 
     float[] _projectionMatrix = Mat4.Perspective((float)(45 * Math.PI / 180), 640f / 640, 0.01f, 100f);
     float[] _modelViewMatrix;
@@ -31,7 +34,10 @@
         {
 
             await SetupContext();
-            await StartAnimation();
+            //Demand each frame every 10 ms => 100fps
+            animationTimer = new System.Timers.Timer(10);
+            animationTimer.Elapsed += new ElapsedEventHandler(async (o, e) => await AnimationTick());
+            animationTimer.Start();
         }
 
         //await DrawScene(_buffers, _context, _program);
@@ -189,7 +195,7 @@
     double _deltaTime;
     float _xRotation = 0f;
 
-    async Task StartAnimation()
+    async Task AnimationTick()
     {
         try
         {
@@ -210,11 +216,6 @@
                 _fpsLastTime = DateTime.Now;
                 StateHasChanged();
             }
-
-            //Animation Loop
-            await Task.Delay(1);
-
-            await StartAnimation();
         }
         catch
         {
