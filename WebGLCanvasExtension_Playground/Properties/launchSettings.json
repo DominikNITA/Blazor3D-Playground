@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:50224",
+      "applicationUrl": "http://localhost:50224/Blazor3D-Playground",
       "sslPort": 44357
     }
   },
