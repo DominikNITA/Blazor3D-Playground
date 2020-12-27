@@ -23,8 +23,8 @@ jobs:
     - name: Publish .NET Core Project
       run: dotnet publish WebGLCanvasExtension_Playground/WebGLCanvasExtension_Playground.csproj -c Release -o release --nologo
       # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
-    - name: Change base-tag in index.html from / to BlazorGitHubPagesDemo
-      run: sed -i 's/<base href="\/" \/>/<base href="\/BlazorGitHubPagesDemo\/" \/>/g' release/wwwroot/index.html
+    - name: Change base-tag in index.html from / to Blazor3D-Playground
+      run: sed -i 's/<base href="\/" \/>/<base href="\/Blazor3D-Playground\/" \/>/g' release/wwwroot/index.html
     - name: copy index.html to 404.html
       run: cp release/wwwroot/index.html release/wwwroot/404.html
     - name: Add .nojekyll file
