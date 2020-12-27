@@ -51,12 +51,12 @@ namespace WebGLCanvasExtension_Playground.Pages
                 await gl.CullFaceAsync(Face.BACK);
                 _shaderProgram = await ShaderProgram.InitShaderProgram(
             gl,
-            await Http.GetStringAsync("/shaders/basic.vert"),
-            await Http.GetStringAsync("/shaders/basic.frag"),
+            await Http.GetStringAsync("shaders/basic.vert"),
+            await Http.GetStringAsync("shaders/basic.frag"),
             new List<string>() { "position", "normal", "uv" },
             new List<string>() { "model", "projection", "ambientLight", "lightDirection", "diffuse" });
 
-                var geometry = Geometry.ParseObjFile(await Http.GetStringAsync("/models/plane.obj"));
+                var geometry = Geometry.ParseObjFile(await Http.GetStringAsync("models/plane.obj"));
                 int size = 16;
                 GenerateTextureData(size, size, 4, 8, 1.8f, 100, true);
                 _texture = await WebGLSharp.Texture.BuildAsync(gl, _textureContainer.GetValueOrDefault(0), size, size);

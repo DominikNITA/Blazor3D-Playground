@@ -68,7 +68,7 @@
         await _context.CullFaceAsync(Face.BACK);
 
         //ShaderProgram is provided by my library
-        _program = await ShaderProgram.InitShaderProgram(_context, await Http.GetStringAsync("/shaders/vs.glsl"), await Http.GetStringAsync("/shaders/fs.glsl"));
+        _program = await ShaderProgram.InitShaderProgram(_context, await Http.GetStringAsync("shaders/vs.glsl"), await Http.GetStringAsync("shaders/fs.glsl"));
 
         //Vertices positions are typed by hand so we can't use other helpers (like Mesh etc..) to initialize buffers
         _buffers = await InitBuffers(_context);

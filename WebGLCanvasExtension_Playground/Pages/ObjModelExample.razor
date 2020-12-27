@@ -33,12 +33,12 @@
             await gl.CullFaceAsync(Face.BACK);
             _shaderProgram = await ShaderProgram.InitShaderProgram(
         gl,
-        await Http.GetStringAsync("/shaders/basic.vert"),
-        await Http.GetStringAsync("/shaders/basic.frag"),
+        await Http.GetStringAsync("shaders/basic.vert"),
+        await Http.GetStringAsync("shaders/basic.frag"),
         new List<string>() { "position", "normal", "uv" },
         new List<string>() { "model", "projection", "ambientLight", "lightDirection", "diffuse" });
 
-            var geometry = Geometry.ParseObjFile(await Http.GetStringAsync("/models/susan.obj"));
+            var geometry = Geometry.ParseObjFile(await Http.GetStringAsync("models/susan.obj"));
             var textureData = new int[40000];
             Random rnd = new Random();
             for (int i = 0; i < 40000; i = i + 4)
