@@ -23,7 +23,7 @@ During the development I have noticed that I need to write similar bites of code
 List of currently available samples:
 
 *   **Simple rotating cube** - quick animation created following Mozilla MSDN tutorial on WebGL
-*   **Model loading ** - loading custom mesh from .obj file using my custom library
+*   **Model loading** - loading custom mesh from .obj file using my custom library
 *   **Camera control with mouse** - rotating the camera around an object using mouse events
 *   **Data to texture (WIP)** - streaming data to an texture and displaying it in form of animation
 
